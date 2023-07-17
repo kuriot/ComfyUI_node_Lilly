@@ -93,14 +93,28 @@ class wildcards:
         matches = re.findall(r"__(.*?)__", text)
 
         for match in matches:
-            card_file = f"{wildcards.directory}/{match}.{wildcards.file_extension}"
-            match = re.escape(match)
-            try:
-                if "*" in match:
-                    files = glob.glob(card_file)
-                    random_file = random.choice(files)
-                    card_file = random_file
+            pattern = match
+            card_file = f"{wildcards.directory}/{pattern}.{wildcards.file_extension}"
+            recursive = False
+            multiple = False
 
+            if "*" in pattern:
+                multiple = True
+
+            if "**" in pattern:
+                parts = pattern.split("**", 1)
+                recursive = True
+                pattern = f"{parts[0]}"
+                card_file = (
+                    f"{wildcards.directory}/{pattern}/**/*.{wildcards.file_extension}"
+                )
+
+            if multiple:
+                files = glob.glob(card_file, recursive=recursive)
+                random_file = random.choice(files)
+                card_file = random_file
+
+            try:
                 with open(card_file, "rb") as f:
                     raw_data = f.read()
                     encoding = chardet.detect(raw_data)["encoding"]
@@ -113,6 +127,7 @@ class wildcards:
                     ]
                     if lines:
                         random_line = random.choice(lines)
+                        match = re.escape(match)
                         text = re.sub(f"__{match}__", random_line, text, count=1)
 
             except (FileNotFoundError, IOError) as error:
@@ -121,5 +136,6 @@ class wildcards:
         result = wildcards.card_loop(text)
 
         return result
+
 
 # print("wildcards test : "+wildcards.run("{3$$a1|{b2|c3|}|d4|{-$$|f|g}|{-2$$h||i}|{1-$$j|k|}}/{$$l|m|}/{0$$n|}"))
