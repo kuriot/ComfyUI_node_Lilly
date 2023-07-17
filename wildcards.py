@@ -70,17 +70,6 @@ class wildcards:
             console.print_exception()
             return ""
 
-    # Retrieve from among the cards.
-    def card(match):
-        if match.group(2) in wildcards.cards:
-            # r = random.choice(wildcards.cards[match.group(2)])
-            card_file = f"{wildcards.directory}/{match}.{wildcards.file_extension}"
-
-        else:
-            r = match.group(2)
-
-        return r
-
     # Repeat the process of retrieving from among the cards. Also handle the ones separated by |.
     def card_loop(text):
         bak = text
