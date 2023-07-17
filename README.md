@@ -1,13 +1,32 @@
 # ComfyUI-node-Lilly
 
-## install
+## Info
 
-ComfyUI_windows_portable\ComfyUI\custom_nodes\ComfyUI_node_Lilly
+Slightly changed wildcards module:
+
+- it doesn't read all files each time, works faster if there are a lot of .txt files;
+- supports '*' and '**' patterns in wildcards;
+- supports .txt files in different encodings.
+
+## Install
+
+Install `chardet` to your environment:
+
+```
+python -m pip install chardet
+```
+
+Go to ./custom_nodes and clone git repo:
+
+```
+cd ./custom_nodes
+git clone https://github.com/kuriot/ComfyUI_node_Lilly.git
+```
 
 ![2023-03-22 05 54 43](https://user-images.githubusercontent.com/20321215/226738610-c042a51c-8e72-45de-b714-385eaac383af.png)
 
 
-## wildcards
+## Wildcards
 
 ### ex
 
@@ -76,7 +95,7 @@ call wildcards.card_load()
 or
 wildcards.run("{9$$-$$a|b|c}",True)
 
-## for ComfyUI
+## For ComfyUI
 
 
 
