@@ -2,6 +2,7 @@ import random
 import re
 import os
 import chardet
+import glob
 
 if (
     __name__ == os.path.splitext(os.path.basename(__file__))[0]
@@ -93,7 +94,13 @@ class wildcards:
 
         for match in matches:
             card_file = f"{wildcards.directory}/{match}.{wildcards.file_extension}"
+            match = re.escape(match)
             try:
+                if "*" in match:
+                    files = glob.glob(card_file)
+                    random_file = random.choice(files)
+                    card_file = random_file
+
                 with open(card_file, "rb") as f:
                     raw_data = f.read()
                     encoding = chardet.detect(raw_data)["encoding"]
